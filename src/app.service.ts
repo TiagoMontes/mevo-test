@@ -35,9 +35,10 @@ export class AppService {
 
     data.forEach((row, index) => {
       const lineNumber = index + 2
+      let rowIsValid = true
       
       if (this.csvValidators.validateCpf(row.patient_cpf)) {
-        validRecords++
+        rowIsValid = false
       } else {
         errors.push({
           line: lineNumber,
@@ -45,6 +46,20 @@ export class AppService {
           message: "CPF deve ter 11 dígitos",
           value: row.patient_cpf || ""
         })
+      }
+
+      if (!this.csvValidators.validateDate(row.date)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "date",
+          message: "Data inválida ou futura",
+          value: row.date || ""
+        })
+      }
+
+      if (rowIsValid) {
+        validRecords++
       }
     })
 
