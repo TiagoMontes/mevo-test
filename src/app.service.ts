@@ -78,6 +78,46 @@ export class AppService {
         })
       }
 
+      if (!this.csvValidators.validateRequired(row.id)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "id",
+          message: "ID é obrigatório",
+          value: row.id || ""
+        })
+      }
+
+      if (!this.csvValidators.validateRequired(row.medication)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "medication",
+          message: "Medicamento é obrigatório",
+          value: row.medication || ""
+        })
+      }
+
+      if (!this.csvValidators.validateRequired(row.dosage)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "dosage",
+          message: "Dosagem é obrigatória",
+          value: row.dosage || ""
+        })
+      }
+
+      if (!this.csvValidators.validateDuration(row.duration)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "duration",
+          message: "Duração deve ser entre 1 e 90 dias",
+          value: row.duration || ""
+        })
+      }
+
       if (rowIsValid) {
         validRecords++
       }
@@ -111,7 +151,7 @@ export class AppService {
     }
   }
 
-  validateAllCsvInformations(data) {
+  validateRequiredInformations(data) {
     console.log(data)
   }
 

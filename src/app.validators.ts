@@ -1,4 +1,8 @@
 export class CsvValidator{
+    validateRequired(value: string): boolean {
+        return !!(value && value.trim().length > 0)
+    }
+    
     validateCpf(cpf: string): boolean {
         if (!cpf) return false
         
@@ -31,5 +35,12 @@ export class CsvValidator{
         
         const validUfs = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
         return validUfs.includes(uf.toUpperCase())
+    }
+
+    validateDuration(duration: string): boolean {
+        if (!duration) return false
+        
+        const durationNumber = parseInt(duration)
+        return !isNaN(durationNumber) && durationNumber > 0 && durationNumber <= 90
     }
 }
