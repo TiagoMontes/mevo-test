@@ -1,9 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { parse } from "csv-parse/sync";
 import { csvData } from './types';
+import { CsvValidator } from './app.validators';
 
 @Injectable()
 export class AppService {
+  constructor(private readonly csvValidators: CsvValidator) {}
+
   getHello(): string {
     return 'Hello World!';
   }
@@ -27,10 +30,31 @@ export class AppService {
 
     const uploadId = `upload_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
+    let validRecords = 0
+    const errors: Array<{line: number, field: string, message: string, value: string}> = []
+
+    data.forEach((row, index) => {
+      const lineNumber = index + 2
+      
+      if (this.csvValidators.validateCpf(row.patient_cpf)) {
+        validRecords++
+      } else {
+        errors.push({
+          line: lineNumber,
+          field: "patient_cpf",
+          message: "CPF deve ter 11 dígitos",
+          value: row.patient_cpf || ""
+        })
+      }
+    })
+
     return {
       upload_id: uploadId,
-      status: "processing",
-      total_records: data.length
+      status: "completed",
+      total_records: data.length,
+      processed_records: data.length,
+      valid_records: validRecords,
+      errors: errors
     }
   }
 
