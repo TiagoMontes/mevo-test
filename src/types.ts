@@ -11,3 +11,8 @@ export interface csvData {
     duration: string,
     notes: string  
 }
+
+export interface controlledValidationData {
+    message: string
+    value: string
+}

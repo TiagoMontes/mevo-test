@@ -36,6 +36,12 @@ export class AppService {
     data.forEach((row, index) => {
       const lineNumber = index + 2
       let rowIsValid = true
+
+      const controlledValidation = this.csvValidators.validateControlledMedication(
+        row.controlled, 
+        row.notes, 
+        row.duration
+      )
       
       if (this.csvValidators.validateCpf(row.patient_cpf)) {
         rowIsValid = false
@@ -115,6 +121,18 @@ export class AppService {
           field: "duration",
           message: "Duração deve ser entre 1 e 90 dias",
           value: row.duration || ""
+        })
+      }
+
+      if (!controlledValidation.isValid) {
+        rowIsValid = false
+        controlledValidation.errors.forEach(error => {
+          errors.push({
+            line: lineNumber,
+            field: "controlled",
+            message: error.message,
+            value: error.value || ""
+          })
         })
       }
 

@@ -1,3 +1,5 @@
+import { controlledValidationData } from "./types"
+
 export class CsvValidator{
     validateRequired(value: string): boolean {
         return !!(value && value.trim().length > 0)
@@ -42,5 +44,30 @@ export class CsvValidator{
         
         const durationNumber = parseInt(duration)
         return !isNaN(durationNumber) && durationNumber > 0 && durationNumber <= 90
+    }
+
+    validateControlledMedication(controlled: string, notes: string, duration: string): { isValid: boolean, errors: controlledValidationData[] } {
+        const errors: controlledValidationData[] = []
+
+        const isControlled = controlled && (controlled.toLowerCase() === 'true')
+        
+        if (isControlled) {
+            if (!notes || notes.trim().length === 0) {
+                errors.push({
+                    message: "Medicamentos controlados requerem observações",
+                    value: notes
+                })
+            }
+            
+            const durationNumber = parseInt(duration)
+            if (!isNaN(durationNumber) && durationNumber > 60) {
+                errors.push({
+                    message: "Medicamentos controlados têm duração máxima de 60 dias",
+                    value: duration
+                })
+            }
+        }
+        
+        return { isValid: errors.length === 0, errors }
     }
 }
