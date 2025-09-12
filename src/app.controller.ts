@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -19,5 +19,10 @@ export class AppController {
     
     const result = this.appService.formatCsvData(buffer)
     return result
+  }
+
+  @Get('api/prescriptions/upload/:id')
+  getUploadStatus(@Param('id') id: string) {
+    return this.appService.getUploadStatus(id)
   }
 }

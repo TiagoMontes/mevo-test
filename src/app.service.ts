@@ -25,10 +25,30 @@ export class AppService {
       throw new BadRequestException('CSV vazio')
     }
 
+    const uploadId = `upload_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+
     return {
-      upload_id: "temp-id-123",
+      upload_id: uploadId,
       status: "processing",
       total_records: data.length
+    }
+  }
+
+  getUploadStatus(uploadId: string) {
+    return {
+      upload_id: uploadId,
+      status: "completed",
+      total_records: 3,
+      processed_records: 3,
+      valid_records: 2,
+      errors: [
+        {
+          line: 2,
+          field: "patient_cpf",
+          message: "CPF inválido",
+          value: "123ABC"
+        }
+      ]
     }
   }
 
