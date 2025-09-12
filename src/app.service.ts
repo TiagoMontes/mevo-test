@@ -7,22 +7,17 @@ import { CsvValidator } from './app.validators';
 export class AppService {
   constructor(private readonly csvValidators: CsvValidator) {}
 
-  getHello(): string {
-    return 'Hello World!';
-  }
+  private processedUploads = new Map<string, any>()
 
-  parseCsvData(csvBufferData: Buffer) {
+  parseCsvData(csvBufferData: Buffer): csvData[] {
     return parse(csvBufferData, {
       columns: true,           
       skip_empty_lines: true,
     })
   }
 
-  formatCsvData(csvBufferData: Buffer) {
-    const data: csvData[] = parse(csvBufferData, {
-      columns: true,           
-      skip_empty_lines: true,
-    })
+  validateAllCsvData(csvBufferData: Buffer) {
+    const data: csvData[] = this.parseCsvData(csvBufferData)
 
     if(!data.length) {
       throw new BadRequestException('CSV vazio')
@@ -43,9 +38,8 @@ export class AppService {
         row.duration
       )
       
-      if (this.csvValidators.validateCpf(row.patient_cpf)) {
+      if (!this.csvValidators.validateCpf(row.patient_cpf)) {
         rowIsValid = false
-      } else {
         errors.push({
           line: lineNumber,
           field: "patient_cpf",
@@ -55,7 +49,7 @@ export class AppService {
       }
 
       if (!this.csvValidators.validateDate(row.date)) {
-        rowIsValid = false
+        rowIsValid = false 
         errors.push({
           line: lineNumber,
           field: "date",
@@ -136,12 +130,13 @@ export class AppService {
         })
       }
 
+      console.log(rowIsValid)
       if (rowIsValid) {
         validRecords++
       }
     })
 
-    return {
+    const result = {
       upload_id: uploadId,
       status: "completed",
       total_records: data.length,
@@ -149,31 +144,19 @@ export class AppService {
       valid_records: validRecords,
       errors: errors
     }
+
+    this.processedUploads.set(uploadId, result)
+
+    return result
   }
 
   getUploadStatus(uploadId: string) {
-    return {
-      upload_id: uploadId,
-      status: "completed",
-      total_records: 3,
-      processed_records: 3,
-      valid_records: 2,
-      errors: [
-        {
-          line: 2,
-          field: "patient_cpf",
-          message: "CPF inválido",
-          value: "123ABC"
-        }
-      ]
+    const result = this.processedUploads.get(uploadId)
+    
+    if (!result) {
+      throw new BadRequestException('Upload não encontrado')
     }
-  }
-
-  validateRequiredInformations(data) {
-    console.log(data)
-  }
-
-  findKeysFromObject(data: csvData[]) {
-    return Object.keys(data[0])
+    
+    return result
   }
 }

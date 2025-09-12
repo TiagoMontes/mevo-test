@@ -6,18 +6,12 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-
   @Post('api/prescriptions/upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     const buffer = file.buffer
     
-    const result = this.appService.formatCsvData(buffer)
+    const result = this.appService.validateAllCsvData(buffer)
     return result
   }
 
