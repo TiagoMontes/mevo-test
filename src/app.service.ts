@@ -58,6 +58,26 @@ export class AppService {
         })
       }
 
+      if (!this.csvValidators.validateCrm(row.doctor_crm)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "doctor_crm",
+          message: "CRM deve ter 6 digitos ",
+          value: row.doctor_crm || ""
+        })
+      }
+
+      if (!this.csvValidators.validateUf(row.doctor_uf)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "doctor_uf",
+          message: "UF inválida",
+          value: row.doctor_uf || ""
+        })
+      }
+
       if (rowIsValid) {
         validRecords++
       }

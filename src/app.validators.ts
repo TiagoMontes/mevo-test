@@ -18,4 +18,18 @@ export class CsvValidator{
 
         return true
     }
+
+    validateCrm(crm: string): boolean {
+        if (!crm) return false
+        
+        const cleanCrm = crm.replace(/\D/g, '')
+        return cleanCrm.length === 6
+    }
+
+    validateUf(uf: string): boolean {
+        if (!uf) return false
+        
+        const validUfs = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
+        return validUfs.includes(uf.toUpperCase())
+    }
 }
