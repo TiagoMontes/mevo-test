@@ -8,14 +8,27 @@ export class AppService {
     return 'Hello World!';
   }
 
+  parseCsvData(csvBufferData: Buffer) {
+    return parse(csvBufferData, {
+      columns: true,           
+      skip_empty_lines: true,
+    })
+  }
+
   formatCsvData(csvBufferData: Buffer) {
     const data: csvData[] = parse(csvBufferData, {
       columns: true,           
       skip_empty_lines: true,
     })
-    
+
     if(!data.length) {
       throw new BadRequestException('CSV vazio')
+    }
+
+    return {
+      upload_id: "temp-id-123",
+      status: "processing",
+      total_records: data.length
     }
   }
 

@@ -16,7 +16,8 @@ export class AppController {
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     const buffer = file.buffer
-
-    this.appService.formatCsvData(buffer)
+    
+    const result = this.appService.formatCsvData(buffer)
+    return result
   }
 }
