@@ -7,7 +7,6 @@ export function normalizeString(s: string) {
 }
 
 export function extractDigitsOnly(digit: string) {
-  // remove todo tipo de caractere diferente de digito
   return digit.replace(/\D/g, '')
 }
 
