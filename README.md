@@ -48,6 +48,7 @@ Eu criei alguns arquivos para testarem as validações, assim como criei alguns 
   - .csv corrompido
   - .csv vazio
   - .csv sem os headers completos
+
 Os arquivos se encontram no diretorio <i>/data</i> do projeto
 
 ## technical decisions
