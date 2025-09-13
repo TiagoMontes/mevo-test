@@ -2,14 +2,28 @@ import { controlledValidationData } from "./types"
 
 export class CsvValidator{
     validateRequired(value: string): boolean {
-        return !!(value && value.trim().length > 0)
+        return value != null && value.trim().length > 0
     }
     
     validateCpf(cpf: string): boolean {
         if (!cpf) return false
         
-        const cleanCpf = cpf.replace(/\D/g, '') // removendo tudo que nao e numero!!!
-        return cleanCpf.length === 11
+        const cleanCpf = cpf.replace(/\D/g, '')
+        if(cleanCpf.length !== 11) return false
+
+        if (/^(\d)\1{10}$/.test(cleanCpf)) return false
+
+        const invalidSequences = [
+            '01234567890',
+            '12345678901', 
+            '23456789012',
+            '10987654321',
+            '09876543210'
+        ]
+        
+        if (invalidSequences.includes(cleanCpf)) return false
+
+        return true
     }
 
     validateDate(dateString: string): boolean {
@@ -17,10 +31,11 @@ export class CsvValidator{
         
         const date = new Date(dateString)
         const today = new Date()
+        today.setHours(23, 59, 59, 999)
 
         if (isNaN(date.getTime())) return false
 
-        if  (date >= today) return false
+        if  (date > today) return false
 
         return true
     }
@@ -49,7 +64,7 @@ export class CsvValidator{
     validateControlledMedication(controlled: string, notes: string, duration: string): { isValid: boolean, errors: controlledValidationData[] } {
         const errors: controlledValidationData[] = []
 
-        const isControlled = controlled && (controlled.toLowerCase() === 'true')
+        const isControlled = controlled?.toLowerCase() === 'true'
         
         if (isControlled) {
             if (!notes || notes.trim().length === 0) {
@@ -69,5 +84,30 @@ export class CsvValidator{
         }
         
         return { isValid: errors.length === 0, errors }
+    }
+
+    validateFrequency(frequency: string): boolean {
+        if (!frequency) return false
+        
+        const trimmedFreq = frequency.trim()
+        
+        const allPatterns = [
+            /^\d+\/\d+h$/i,
+            /^se\s+necessário$/i,
+            /^quando\s+necessário$/i, 
+            /^conforme\s+necessidade$/i,
+            /^\d+x\s*(ao\s*dia|dia)$/i
+        ]
+        
+        return allPatterns.some(pattern => pattern.test(trimmedFreq))
+    }
+
+    validateDosage(dosage: string): boolean {
+        if (!dosage) return false
+        
+        const trimmedDosage = dosage.trim()
+
+        const dosagePattern = /^\d+(\.\d+)?(mg|g|ml|cp)$/i
+        return dosagePattern.test(trimmedDosage)
     }
 }

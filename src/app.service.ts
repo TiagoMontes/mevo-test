@@ -40,7 +40,15 @@ export class AppService {
         row.duration
       )
 
-      if (usedIds.has(row.id)) {
+      if (!this.csvValidators.validateRequired(row.id)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "id",
+          message: "ID é obrigatório",
+          value: row.id || ""
+        })
+      } else if (usedIds.has(row.id)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
@@ -49,7 +57,17 @@ export class AppService {
           value: row.id || ""
         })
       } else {
-        usedIds.add(row.id)
+        usedIds.add(row.id) 
+      }
+
+      if (!this.csvValidators.validateRequired(row.medication)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "medication",
+          message: "Medicamento é obrigatório",
+          value: row.medication || ""
+        })
       }
       
       if (!this.csvValidators.validateCpf(row.patient_cpf)) {
@@ -92,36 +110,6 @@ export class AppService {
         })
       }
 
-      if (!this.csvValidators.validateRequired(row.id)) {
-        rowIsValid = false
-        errors.push({
-          line: lineNumber,
-          field: "id",
-          message: "ID é obrigatório",
-          value: row.id || ""
-        })
-      }
-
-      if (!this.csvValidators.validateRequired(row.medication)) {
-        rowIsValid = false
-        errors.push({
-          line: lineNumber,
-          field: "medication",
-          message: "Medicamento é obrigatório",
-          value: row.medication || ""
-        })
-      }
-
-      if (!this.csvValidators.validateRequired(row.dosage)) {
-        rowIsValid = false
-        errors.push({
-          line: lineNumber,
-          field: "dosage",
-          message: "Dosagem é obrigatória",
-          value: row.dosage || ""
-        })
-      }
-
       if (!this.csvValidators.validateDuration(row.duration)) {
         rowIsValid = false
         errors.push({
@@ -129,6 +117,26 @@ export class AppService {
           field: "duration",
           message: "Duração deve ser entre 1 e 90 dias",
           value: row.duration || ""
+        })
+      }
+
+      if (!this.csvValidators.validateFrequency(row.frequency)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "frequency",
+          message: "Frequência deve estar no formato correto (ex: 8/8h, 12/12h, se necessário e etc.)",
+          value: row.frequency || ""
+        })
+      }
+
+      if (!this.csvValidators.validateDosage(row.dosage)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "dosage",
+          message: "Dosagem deve conter valor e unidade (ex: 500mg, 10ml, 2cp)",
+          value: row.dosage || ""
         })
       }
 
@@ -171,30 +179,5 @@ export class AppService {
     }
     
     return result
-  }
-
-  private validateIdUniqueness(id: string, lineNumber: number, usedIds: Set<string>, errors: Array<{line: number, field: string, message: string, value: string}>): boolean {
-    if (usedIds.has(id)) {
-      errors.push({
-        line: lineNumber,
-        field: "id",
-        message: "ID já existe no arquivo",
-        value: id
-      })
-      return false
-    }
-    
-    if (this.getUploadStatus(id)) {
-      errors.push({
-          line: lineNumber,
-          field: "id",
-          message: "ID já existe no sistema",
-          value: id
-      })
-      return false
-    }
-    
-    usedIds.add(id)
-    return true
   }
 }
