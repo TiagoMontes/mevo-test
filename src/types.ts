@@ -1,4 +1,4 @@
-export interface csvData {
+export interface PrescriptionRecord {
     id: string,
     date: string,
     patient_cpf: string,
@@ -12,7 +12,7 @@ export interface csvData {
     notes: string  
 }
 
-export interface controlledValidationData {
+export interface ValidationError {
     message: string
     value: string
 }

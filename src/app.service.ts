@@ -1,27 +1,28 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { parse } from "csv-parse/sync";
-import { csvData } from './types';
-import { CsvValidator } from './app.validators';
+import { PrescriptionRecord } from './types';
+import { prescriptionValidator } from './app.validators';
 import { v4 as uuidv4 } from 'uuid';
+import { ERROR_MESSAGE } from './app.constants';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly csvValidators: CsvValidator) {}
+  constructor(private readonly prescriptionValidator: prescriptionValidator) {}
 
-  private processedUploads = new Map<string, any>()
+  private uploadRepository = new Map<string, any>()
 
-  parseCsvData(csvBufferData: Buffer): csvData[] {
+  parseCsvToRecords(csvBufferData: Buffer): PrescriptionRecord[] {
     return parse(csvBufferData, {
       columns: true,           
       skip_empty_lines: true,
     })
   }
 
-  validateAllCsvData(csvBufferData: Buffer) {
-    const data: csvData[] = this.parseCsvData(csvBufferData)
+  processPrescriptionUpload(csvBufferData: Buffer) {
+    const Rercords: PrescriptionRecord[] = this.parseCsvToRecords(csvBufferData)
 
-    if(!data.length) {
-      throw new BadRequestException('CSV vazio')
+    if(!Rercords.length) {
+      throw new BadRequestException(ERROR_MESSAGE.EMPTY_CSV)
     }
 
     const uploadId = uuidv4()
@@ -30,22 +31,22 @@ export class AppService {
     const errors: Array<{line: number, field: string, message: string, value: string}> = []
     const usedIds = new Set<string>()
 
-    data.forEach((row, index) => {
+    Rercords.forEach((row, index) => {
       const lineNumber = index + 2
       let rowIsValid = true
 
-      const controlledValidation = this.csvValidators.validateControlledMedication(
+      const controlledValidation = this.prescriptionValidator.validateControlledMedication(
         row.controlled, 
         row.notes, 
         row.duration
       )
 
-      if (!this.csvValidators.validateRequired(row.id)) {
+      if (!this.prescriptionValidator.isFieldRequired(row.id)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
           field: "id",
-          message: "ID é obrigatório",
+          message: ERROR_MESSAGE.REQUIRED_ID,
           value: row.id || ""
         })
       } else if (usedIds.has(row.id)) {
@@ -53,89 +54,89 @@ export class AppService {
         errors.push({
           line: lineNumber,
           field: "id",
-          message: "o ID dessa prescrição deve ser único",
+          message: ERROR_MESSAGE.DUPLICATE_ID,
           value: row.id || ""
         })
       } else {
         usedIds.add(row.id) 
       }
 
-      if (!this.csvValidators.validateRequired(row.medication)) {
+      if (!this.prescriptionValidator.isFieldRequired(row.medication)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
           field: "medication",
-          message: "Medicamento é obrigatório",
+          message: ERROR_MESSAGE.REQUIRED_MEDICATION,
           value: row.medication || ""
         })
       }
       
-      if (!this.csvValidators.validateCpf(row.patient_cpf)) {
+      if (!this.prescriptionValidator.validateCpf(row.patient_cpf)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
           field: "patient_cpf",
-          message: "CPF deve ter 11 dígitos",
+          message: ERROR_MESSAGE.INVALID_CPF,
           value: row.patient_cpf || ""
         })
       }
 
-      if (!this.csvValidators.validateDate(row.date)) {
+      if (!this.prescriptionValidator.validateDate(row.date)) {
         rowIsValid = false 
         errors.push({
           line: lineNumber,
           field: "date",
-          message: "Data inválida ou futura",
+          message: ERROR_MESSAGE.INVALID_DATE,
           value: row.date || ""
         })
       }
 
-      if (!this.csvValidators.validateCrm(row.doctor_crm)) {
+      if (!this.prescriptionValidator.validateCrm(row.doctor_crm)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
           field: "doctor_crm",
-          message: "CRM deve ter 6 digitos ",
+          message: ERROR_MESSAGE.INVALID_CRM,
           value: row.doctor_crm || ""
         })
       }
 
-      if (!this.csvValidators.validateUf(row.doctor_uf)) {
+      if (!this.prescriptionValidator.validateUf(row.doctor_uf)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
           field: "doctor_uf",
-          message: "UF inválida",
+          message: ERROR_MESSAGE.INVALID_UF,
           value: row.doctor_uf || ""
         })
       }
 
-      if (!this.csvValidators.validateDuration(row.duration)) {
+      if (!this.prescriptionValidator.validateDuration(row.duration)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
           field: "duration",
-          message: "Duração deve ser entre 1 e 90 dias",
+          message: ERROR_MESSAGE.INVALID_DURATION,
           value: row.duration || ""
         })
       }
 
-      if (!this.csvValidators.validateFrequency(row.frequency)) {
+      if (!this.prescriptionValidator.validateFrequency(row.frequency)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
           field: "frequency",
-          message: "Frequência deve estar no formato correto (ex: 8/8h, 12/12h, se necessário e etc.)",
+          message: ERROR_MESSAGE.INVALID_FREQUENCY,
           value: row.frequency || ""
         })
       }
 
-      if (!this.csvValidators.validateDosage(row.dosage)) {
+      if (!this.prescriptionValidator.validateDosage(row.dosage)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
           field: "dosage",
-          message: "Dosagem deve conter valor e unidade (ex: 500mg, 10ml, 2cp)",
+          message: ERROR_MESSAGE.INVALID_DOSAGE,
           value: row.dosage || ""
         })
       }
@@ -160,22 +161,22 @@ export class AppService {
     const result = {
       upload_id: uploadId,
       status: "completed",
-      total_records: data.length,
-      processed_records: data.length,
+      total_records: Rercords.length,
+      processed_records: Rercords.length,
       valid_records: validRecords,
       errors: errors
     }
 
-    this.processedUploads.set(uploadId, result)
+    this.uploadRepository.set(uploadId, result)
 
     return result
   }
 
-  getUploadStatus(uploadId: string) {
-    const result = this.processedUploads.get(uploadId)
+  retrieveUploadStatus(uploadId: string) {
+    const result = this.uploadRepository.get(uploadId)
     
     if (!result) {
-      throw new BadRequestException('Upload não encontrado')
+      throw new BadRequestException(ERROR_MESSAGE.UPLOAD_NOT_FOUND)
     }
     
     return result

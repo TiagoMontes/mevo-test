@@ -11,12 +11,12 @@ export class AppController {
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     const buffer = file.buffer
     
-    const result = this.appService.validateAllCsvData(buffer)
+    const result = this.appService.processPrescriptionUpload(buffer)
     return result
   }
 
   @Get('api/prescriptions/upload/:id')
   getUploadStatus(@Param('id') id: string) {
-    return this.appService.getUploadStatus(id)
+    return this.appService.retrieveUploadStatus(id)
   }
 }

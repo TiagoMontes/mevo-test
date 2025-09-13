@@ -1,18 +1,19 @@
-import { controlledValidationData } from "./types"
-import { cleanDigitsRegex, isAllDigitsSame, isDosagePattern } from "./utils"
+import { BRAZILIAN_STATES, VALIDATION_LIMITS } from "./app.constants"
+import { ValidationError } from "./types"
+import { extractDigitsOnly, hasRepeatingDigits, matchesDosageFormat } from "./utils"
 
-export class CsvValidator{
-    validateRequired(value: string): boolean {
+export class prescriptionValidator{
+    isFieldRequired(value: string): boolean {
         return value != null && value.trim().length > 0
     }
     
     validateCpf(cpf: string): boolean {
         if (!cpf) return false
         
-        const cleanCpf = cleanDigitsRegex(cpf)
-        if(cleanCpf.length !== 11) return false
+        const cleanCpf = extractDigitsOnly(cpf)
+        if(cleanCpf.length !== VALIDATION_LIMITS.CPF_LENGTH) return false
 
-        if (isAllDigitsSame(cleanCpf)) return false
+        if (hasRepeatingDigits(cleanCpf)) return false
 
         const invalidSequences = [
             '01234567890',
@@ -44,26 +45,25 @@ export class CsvValidator{
     validateCrm(crm: string): boolean {
         if (!crm) return false
         
-        const cleanCrm = cleanDigitsRegex(crm)
-        return cleanCrm.length === 6
+        const cleanCrm = extractDigitsOnly(crm)
+        return cleanCrm.length === VALIDATION_LIMITS.CRM_LENGTH
     }
 
     validateUf(uf: string): boolean {
         if (!uf) return false
-        
-        const validUfs = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
-        return validUfs.includes(uf.toUpperCase())
+    
+        return BRAZILIAN_STATES.includes(uf.toUpperCase())
     }
 
     validateDuration(duration: string): boolean {
         if (!duration) return false
         
         const durationNumber = parseInt(duration)
-        return !isNaN(durationNumber) && durationNumber > 0 && durationNumber <= 90
+        return !isNaN(durationNumber) && durationNumber >= VALIDATION_LIMITS.MIN_DURATION_DAYS && durationNumber <= VALIDATION_LIMITS.MAX_DURATION_DAYS
     }
 
-    validateControlledMedication(controlled: string, notes: string, duration: string): { isValid: boolean, errors: controlledValidationData[] } {
-        const errors: controlledValidationData[] = []
+    validateControlledMedication(controlled: string, notes: string, duration: string): { isValid: boolean, errors: ValidationError[] } {
+        const errors: ValidationError[] = []
 
         const isControlled = controlled?.toLowerCase() === 'true'
         
@@ -76,7 +76,7 @@ export class CsvValidator{
             }
             
             const durationNumber = parseInt(duration)
-            if (!isNaN(durationNumber) && durationNumber > 60) {
+            if (!isNaN(durationNumber) && durationNumber > VALIDATION_LIMITS.MAX_CONTROLLED_DURATION_DAYS) {
                 errors.push({
                     message: "Medicamentos controlados têm duração máxima de 60 dias",
                     value: duration
@@ -108,6 +108,6 @@ export class CsvValidator{
         
         const trimmedDosage = dosage.trim()
 
-        return isDosagePattern(trimmedDosage)
+        return matchesDosageFormat(trimmedDosage)
     }
 }
