@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { parse } from "csv-parse/sync";
 import { csvData } from './types';
 import { CsvValidator } from './app.validators';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AppService {
@@ -23,10 +24,11 @@ export class AppService {
       throw new BadRequestException('CSV vazio')
     }
 
-    const uploadId = `upload_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    const uploadId = uuidv4()
 
     let validRecords = 0
     const errors: Array<{line: number, field: string, message: string, value: string}> = []
+    const usedIds = new Set<string>()
 
     data.forEach((row, index) => {
       const lineNumber = index + 2
@@ -37,6 +39,18 @@ export class AppService {
         row.notes, 
         row.duration
       )
+
+      if (usedIds.has(row.id)) {
+        rowIsValid = false
+        errors.push({
+          line: lineNumber,
+          field: "id",
+          message: "o ID dessa prescrição deve ser único",
+          value: row.id || ""
+        })
+      } else {
+        usedIds.add(row.id)
+      }
       
       if (!this.csvValidators.validateCpf(row.patient_cpf)) {
         rowIsValid = false
@@ -130,7 +144,6 @@ export class AppService {
         })
       }
 
-      console.log(rowIsValid)
       if (rowIsValid) {
         validRecords++
       }
@@ -158,5 +171,30 @@ export class AppService {
     }
     
     return result
+  }
+
+  private validateIdUniqueness(id: string, lineNumber: number, usedIds: Set<string>, errors: Array<{line: number, field: string, message: string, value: string}>): boolean {
+    if (usedIds.has(id)) {
+      errors.push({
+        line: lineNumber,
+        field: "id",
+        message: "ID já existe no arquivo",
+        value: id
+      })
+      return false
+    }
+    
+    if (this.getUploadStatus(id)) {
+      errors.push({
+          line: lineNumber,
+          field: "id",
+          message: "ID já existe no sistema",
+          value: id
+      })
+      return false
+    }
+    
+    usedIds.add(id)
+    return true
   }
 }
