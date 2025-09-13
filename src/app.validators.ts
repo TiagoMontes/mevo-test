@@ -1,9 +1,10 @@
-import { BRAZILIAN_STATES, VALIDATION_LIMITS } from "./app.constants"
-import { ValidationError } from "./types"
+import { BadRequestException } from "@nestjs/common"
+import { BRAZILIAN_STATES, ERROR_MESSAGE, REQUIRED_CSV_COLUMNS, VALIDATION_LIMITS } from "./app.constants"
+import { PrescriptionRecord, ValidationError } from "./types"
 import { hasLetter, hasRepeatingDigits, matchesDosageFormat } from "./utils"
 
 export class prescriptionValidator{
-    isFieldRequired(value: string): boolean {
+    hasValue(value: string): boolean {
         return value != null && value.trim().length > 0
     }
     
@@ -110,5 +111,21 @@ export class prescriptionValidator{
         const trimmedDosage = dosage.trim()
 
         return matchesDosageFormat(trimmedDosage)
+    }
+
+    validateCsvStructure(records: PrescriptionRecord[]) {
+        if (!records || records.length === 0) {
+          throw new BadRequestException(ERROR_MESSAGE.EMPTY_CSV)
+        }
+    
+        const firstRecord = records[0]
+        const availableColumns = Object.keys(firstRecord)
+        const missingColumns = REQUIRED_CSV_COLUMNS.filter(column => !availableColumns.includes(column))
+    
+        if (missingColumns.length > 0) {
+          throw new BadRequestException(
+            `${ERROR_MESSAGE.MISSING_REQUIRED_COLUMNS}: ${missingColumns.join(', ')}`
+          )
+        }
     }
 }

@@ -3,7 +3,7 @@ import { parse } from "csv-parse/sync";
 import { PrescriptionRecord } from './types';
 import { prescriptionValidator } from './app.validators';
 import { v4 as uuidv4 } from 'uuid';
-import { ERROR_MESSAGE, REQUIRED_CSV_COLUMNS } from './app.constants';
+import { ERROR_MESSAGE } from './app.constants';
 
 @Injectable()
 export class AppService {
@@ -25,26 +25,10 @@ export class AppService {
     }
   }
 
-  private validateCsvStructure(records: PrescriptionRecord[]) {
-    if (!records || records.length === 0) {
-      throw new BadRequestException(ERROR_MESSAGE.EMPTY_CSV)
-    }
-
-    const firstRecord = records[0]
-    const availableColumns = Object.keys(firstRecord)
-    const missingColumns = REQUIRED_CSV_COLUMNS.filter(column => !availableColumns.includes(column))
-
-    if (missingColumns.length > 0) {
-      throw new BadRequestException(
-        `${ERROR_MESSAGE.MISSING_REQUIRED_COLUMNS}: ${missingColumns.join(', ')}`
-      )
-    }
-  }
-
   processPrescriptionUpload(csvBufferData: Buffer) {
     try {
       const Records: PrescriptionRecord[] = this.parseCsvToRecords(csvBufferData)
-      this.validateCsvStructure(Records)
+      this.prescriptionValidator.validateCsvStructure(Records)
 
       return this.processValidation(Records)
     } catch (error) {
@@ -53,7 +37,7 @@ export class AppService {
     }
   }
 
-  private processValidation(Records: PrescriptionRecord[]) {
+  processValidation(Records: PrescriptionRecord[]) {
 
     const uploadId = uuidv4()
 
@@ -71,7 +55,7 @@ export class AppService {
         row.duration
       )
 
-      if (!this.prescriptionValidator.isFieldRequired(row.id)) {
+      if (!this.prescriptionValidator.hasValue(row.id)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
@@ -91,7 +75,7 @@ export class AppService {
         usedIds.add(row.id) 
       }
 
-      if (!this.prescriptionValidator.isFieldRequired(row.medication)) {
+      if (!this.prescriptionValidator.hasValue(row.medication)) {
         rowIsValid = false
         errors.push({
           line: lineNumber,
