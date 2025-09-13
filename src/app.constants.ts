@@ -19,6 +19,25 @@ export const ERROR_MESSAGE = {
     REQUIRED_MEDICATION: 'Medicamento é obrigatório',
     EMPTY_CSV: 'Arquivo CSV vazio',
     UPLOAD_NOT_FOUND: 'Upload não encontrado',
+    CORRUPTED_FILE: 'Arquivo corrompido ou formato inválido',
+    INVALID_CSV_STRUCTURE: 'Estrutura do CSV inválida. Verifique se todas as colunas obrigatórias estão presentes',
+    MISSING_REQUIRED_COLUMNS: 'Colunas obrigatórias ausentes no CSV',
+    INVALID_FILE_FORMAT: 'Formato de arquivo inválido. Envie um arquivo CSV válido',
+    PROCESSING_ERROR: 'Erro ao processar o arquivo. Verifique o formato e tente novamente'
 }
 
 export const BRAZILIAN_STATES = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
+
+export const REQUIRED_CSV_COLUMNS = [
+    'id',
+    'date',
+    'patient_cpf',
+    'doctor_crm',
+    'doctor_uf',
+    'medication',
+    'controlled',
+    'dosage',
+    'frequency',
+    'duration',
+    'notes'
+]

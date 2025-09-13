@@ -3,7 +3,7 @@ import { parse } from "csv-parse/sync";
 import { PrescriptionRecord } from './types';
 import { prescriptionValidator } from './app.validators';
 import { v4 as uuidv4 } from 'uuid';
-import { ERROR_MESSAGE } from './app.constants';
+import { ERROR_MESSAGE, REQUIRED_CSV_COLUMNS } from './app.constants';
 
 @Injectable()
 export class AppService {
@@ -11,19 +11,49 @@ export class AppService {
 
   private uploadRepository = new Map<string, any>()
 
-  parseCsvToRecords(csvBufferData: Buffer): PrescriptionRecord[] {
-    return parse(csvBufferData, {
-      columns: true,           
-      skip_empty_lines: true,
-    })
+  parseCsvToRecords(csvBufferData: Buffer) {
+    try {
+      const result = parse(csvBufferData, {
+        columns: true,
+        skip_empty_lines: true,
+      })
+
+      return result as PrescriptionRecord[]
+    } catch (error) {
+      console.error(error)
+      throw new BadRequestException(ERROR_MESSAGE.INVALID_FILE_FORMAT)
+    }
+  }
+
+  private validateCsvStructure(records: PrescriptionRecord[]) {
+    if (!records || records.length === 0) {
+      throw new BadRequestException(ERROR_MESSAGE.EMPTY_CSV)
+    }
+
+    const firstRecord = records[0]
+    const availableColumns = Object.keys(firstRecord)
+    const missingColumns = REQUIRED_CSV_COLUMNS.filter(column => !availableColumns.includes(column))
+
+    if (missingColumns.length > 0) {
+      throw new BadRequestException(
+        `${ERROR_MESSAGE.MISSING_REQUIRED_COLUMNS}: ${missingColumns.join(', ')}`
+      )
+    }
   }
 
   processPrescriptionUpload(csvBufferData: Buffer) {
-    const Rercords: PrescriptionRecord[] = this.parseCsvToRecords(csvBufferData)
+    try {
+      const Records: PrescriptionRecord[] = this.parseCsvToRecords(csvBufferData)
+      this.validateCsvStructure(Records)
 
-    if(!Rercords.length) {
-      throw new BadRequestException(ERROR_MESSAGE.EMPTY_CSV)
+      return this.processValidation(Records)
+    } catch (error) {
+      console.error(error)
+      throw new BadRequestException(ERROR_MESSAGE.PROCESSING_ERROR)
     }
+  }
+
+  private processValidation(Records: PrescriptionRecord[]) {
 
     const uploadId = uuidv4()
 
@@ -31,7 +61,7 @@ export class AppService {
     const errors: Array<{line: number, field: string, message: string, value: string}> = []
     const usedIds = new Set<string>()
 
-    Rercords.forEach((row, index) => {
+    Records.forEach((row, index) => {
       const lineNumber = index + 2
       let rowIsValid = true
 
@@ -161,8 +191,8 @@ export class AppService {
     const result = {
       upload_id: uploadId,
       status: "completed",
-      total_records: Rercords.length,
-      processed_records: Rercords.length,
+      total_records: Records.length,
+      processed_records: Records.length,
       valid_records: validRecords,
       errors: errors
     }

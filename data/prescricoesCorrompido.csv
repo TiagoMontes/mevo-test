@@ -4,12 +4,9 @@ RX0002,2025-01-28,35191216164,615920,AC,Cimegripe,FALSE,,12/12h,60,Tomar após a
 RX0003,2021-05-15,35393187829,761595,AL,Paracetamol,FALSE,20mg,6/6h,84,Tomar após as refeições.
 RX0004,2025-09-13 01:00,41034357588,722187,DF,Amoxicilina,FALSE,10ml,8/8h,90,Tomar após as refeições.
 RX0005,2023-10-17,49880707659,419303,SC,Omeprazol,FALSE,1g,12/12h,24,Tomar após as refeições.
-RX0006,2022-09-03,31093163480,224325,SP,Morfina,TRUE,10mg,Se necessário,50,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0007,2025-07-15,13729290082,257154,RS,Omeprazol,FALSE,,6/6h,30,Tomar após as refeições.
-RX0008,2020-08-17,44311574989,901041,SE,Oxicodona,TRUE,1g,6/6h,11,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0009,2020-08-17,49557624407,225591,MA,Codeína,TRUE,50mg,1234,8,123
-RX0010,2024-05-04,87377086438,402905,MS,Ibuprofeno,,10ml,12/12h,18,Tomar após as refeições.
-RX0011,2022-06-30,99154128666,157949,GO,Azitromicina,FALSE,ABC,8/8h,39,Tomar após as refeições.
+id,date,patient_cpf,doctor_crm,doctor_uf,medication,controlled,dosage,frequency,duration,notes
+RX001,1900-01-01,12345678901,1,A,M,0,1mg,1/1h,999999,N
+RX002,2050-12-31,98765432109,9999999,ABCDEFGHIJK,MedicamentoComNomeMuitoLongoQueDeveriaTerUmLi
 RX0012,2021-09-29,74506897768,838812,RS,Morfina,TRUE,1g,Se necessário,20,Tomar 1 comprimido conforme orientação. Não exceder a dose.
 RX0013,2021-08-30,62939832164,257443,AM,Omeprazol,FALSE,5ml,8/8h,81,Tomar após as refeições.
 RX0014,2023-04-11,17846500737,762876,RR,Metadona,TRUE,500mg,8/8h,54,Tomar 1 comprimido conforme orientação. Não exceder a dose.
@@ -20,14 +17,9 @@ RX0018,2021-05-27,23577755680,659296,PE,Oxicodona,TRUE,20mg,8/8h,19,Tomar 1 comp
 RX0019,2022-04-14,22341315725,451154,AC,Azitromicina,FALSE,500mg,12/12h,88,Tomar após as refeições.
 RX0020,2023-01-10,63883834235,176146,ES,Ritalina,TRUE,500mg,Se necessário,36,Tomar 1 comprimido conforme orientação. Não exceder a dose.
 RX0021,2024-01-30,72558352660,327332,TO,Morfina,TRUE,500mg,8/8h,32,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0022,2023-11-08,4233042745,234483,DF,Amoxicilina,FALSE,20mg,24/24h,49,Tomar após as refeições.
-RX0023,2023-02-07,96173096324,959361,DF,Neosaldina,FALSE,20mg,12/12h,84,Tomar após as refeições.
-RX0024,2024-10-20,93849846896,571446,MS,Neosaldina,FALSE,1g,12/12h,23,Tomar após as refeições.
-RX0025,2021-06-01,58143435774,740365,PB,Omeprazol,FALSE,10ml,24/24h,44,Tomar após as refeições.
-RX0026,2024-12-26,42562659510,633303,AP,Paracetamol,FALSE,10ml,Se necessário,89,Tomar após as refeições.
-RX0027,2020-10-27,2832413490,530149,CE,Zolpidem,TRUE,20mg,24/24h,56,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0028,2024-10-01,86080081057,695587,AM,Paracetamol,,1g,8/8h,30,Tomar após as refeições.
-RX0029,2022-04-20,6703424993,548935,PI,Lorazepam,TRUE,500mg,Se necessário,9,Tomar 1 comprimido conforme orientação. Não exceder a dose.
+id,date,patient_cpf,doctor_crm,doctor_uf,medication,controlled,dosage,frequency,duration,notes
+RX001,1900-01-01,12345678901,1,A,M,0,1mg,1/1h,999999,N
+RX002,2050-12-31,98765432109,9999999,ABCDEFGHIJK,MedicamentoComNomeMuitoLongoQueDeveriaTerUmLimido conforme orientação. Não exceder a dose.
 RX0030,2021-08-14,37189635950,606968,MG,Clonazepam,TRUE,20mg,24/24h,47,Tomar 1 comprimido conforme orientação. Não exceder a dose.
 RX0031,2020-09-17,25270591606,932883,MG,Paracetamol,FALSE,10ml,12/12h,7,Tomar após as refeições.
 RX0032,2025-07-08,10116616498,216435,PI,Loratadina,FALSE,1g,12/12h,87,Tomar após as refeições.
@@ -54,23 +46,18 @@ RX0051,2022-12-03,46657151637,497207,PE,Zolpidem,TRUE,750mg,12/12h,40,Tomar 1 co
 RX0053,2022-08-21,76325937020,657563,TO,Loratadina,FALSE,10mg,24/24h,7,Tomar após as refeições.
 RX0054,2024-05-11,72254758677,614576,GO,Clonazepam,TRUE,50mg,24/24h,26,Tomar 1 comprimido conforme orientação. Não exceder a dose.
 RX0055,2023-10-11,35361054448,176961,GO,Neosaldina,FALSE,10mg,6/6h,83,Tomar após as refeições.
-RX0056,2020-09-11,83785427822,278772,MS,Omeprazol,FALSE,100mg,8/8h,81,Tomar após as refeições.
+RX0056,id,date,patient_cpf,doctor_crm,doctor_uf,medication,controlled,dosage,frequency,duration,notes
+RX001,1900-01-01,12345678901,1,A,M,0,1mg,1/1h,999999,N
+RX002,2050-12-31,98765432109,9999999,ABCDEFGHIJK,MedicamentoComNomeMuitoLongoQueDeveriaTerUmLiS,Omeprazol,FALSE,100mg,8/8h,81,Tomar após as refeições.
 RX0057,2024-09-19,33186876818,249879,PA,Dorflex,FALSE,5ml,Se necessário,82,Tomar após as refeições.
 RX0058,2021-11-18,45824348510,997005,BA,Morfina,TRUE,10mg,8/8h,9,Tomar 1 comprimido conforme orientação. Não exceder a dose.
 RX0059,2023-08-06,123456789AB,684092,AP,Amoxicilina,FALSE,50mg,12/12h,57,Tomar após as refeições.
 RX0060,2024-01-01,80468392316,964527,RR,Amoxicilina,FALSE,5ml,8/8h,19,Tomar após as refeições.
 RX0061,2023-04-16,70377688894,420902,MA,Cimegripe,FALSE,10ml,6/6h,49,Tomar após as refeições.
 RX0062,2022-10-04,39961324174,730543,ES,Metadona,TRUE,20mg,8/8h,28,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0063,2022-02-26,37154779198,865548,MT,Codeína,TRUE,50mg,6/6h,40,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0064,2024-11-20,43245928807,935773,SE,Diazepam,TRUE,20mg,6/6h,33,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0065,2024-03-04,54489816822,672481,PR,Loratadina,FALSE,750mg,Se necessário,71,Tomar após as refeições.
-RX0066,2020-12-12,35852004522,278672,TO,Paracetamol,FALSE,10mg,12/12h,67,Tomar após as refeições.
-RX0067,2026-06-03,13054443619,137987,MA,Ibuprofeno,FALSE,20mg,8/8h,88,Tomar após as refeições.
-RX0068,2021-09-04,30499149885,103131,AL,Lorazepam,TRUE,10ml,8/8h,5,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0069,2020-10-04,32587332752,331708,AP,Dipirona Sódica,FALSE,250mg,6/6h,79,Tomar após as refeições.
-RX0070,2021-03-14,55022937129,892597,AP,Loratadina,FALSE,500mg,8/8h,19,Tomar após as refeições.
-RX0071,2022-07-08,93895636555,579555,AL,Clonazepam,TRUE,5ml,6/6h,24,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0072,2021-12-03,96771228722,672441,PI,Diazepam,TRUE,500mg,8/8h,29,Tomar 1 comprimido conforme orientação. Não exceder a dose.
+id,date,patient_cpf,doctor_crm,doctor_uf,medication,controlled,dosage,frequency,duration,notes
+RX001,1900-01-01,12345678901,1,A,M,0,1mg,1/1h,999999,N
+RX002,2050-12-31,98765432109,9999999,ABCDEFGHIJK,MedicamentoComNomeMuitoLongoQueDeveriaTerUmLinforme orientação. Não exceder a dose.
 RX0073,2023-11-24,38486804977,301123,RS,Dipirona Sódica,FALSE,1g,Se necessário,31,Tomar após as refeições.
 RX0074,2020-08-31,20353836449,332904,TO,Dorflex,FALSE,5ml,6/6h,74,Tomar após as refeições.
 RX0075,2024-06-09,26565737928,150502,PA,Azitromicina,FALSE,500mg,12/12h,76,Tomar após as refeições.
@@ -97,13 +84,9 @@ RX0095,2022-03-27,66693065499,535503,RS,Diazepam,TRUE,100mg,24/24h,17,Tomar 1 co
 RX0096,2022-11-07,60217541299,709688,RN,Dipirona Sódica,FALSE,750mg,6/6h,78,Tomar após as refeições.
 RX0097,2024-03-13,58347506288,714379,RS,Dipirona Sódica,FALSE,750mg,Se necessário,30,Tomar após as refeições.
 RX0098,2024-01-08,59529971790,521581,MT,Dorflex,FALSE,5ml,8/8h,55,Tomar após as refeições.
-RX0099,2021-04-06,11857899647,422382,PA,Tramadol,TRUE,10ml,Se necessário,41,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0100,2022-05-31,80615194783,293234,SC,Diazepam,TRUE,10mg,8/8h,59,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0101,2024-10-14,74779293364,516733,MG,Azitromicina,FALSE,1g,6/6h,9,Tomar após as refeições.
-RX0102,2022-06-28,19108463378,771929,MS,Paracetamol,FALSE,20mg,Se necessário,31,Tomar após as refeições.
-RX0103,2022-08-10,50536115673,905711,GO,Ibuprofeno,FALSE,50mg,12/12h,85,Tomar após as refeições.
-RX0104,2021-07-24,79248960603,840222,AC,Omeprazol,FALSE,50mg,6/6h,21,Tomar após as refeições.
-RX0105,2023-11-27,21570402625,204523,GO,Dipirona Sódica,FALSE,1g,6/6h,49,Tomar após as refeições.
+{
+  "json": "dentro de um CSV"
+}O,Dipirona Sódica,FALSE,1g,6/6h,49,Tomar após as refeições.
 RX0106,2023-12-30,14735222031,213808,PB,Clonazepam,TRUE,250mg,8/8h,11,Tomar 1 comprimido conforme orientação. Não exceder a dose.
 RX0107,2023-02-27,61537116875,983942,PE,Diazepam,TRUE,5ml,6/6h,24,Tomar 1 comprimido conforme orientação. Não exceder a dose.
 RX0108,2025-02-17,18241894690,580068,AP,Diazepam,TRUE,5ml,12/12h,56,Tomar 1 comprimido conforme orientação. Não exceder a dose.
@@ -136,23 +119,9 @@ RX0134,2021-04-04,15013776327,399308,DF,Oxicodona,TRUE,5ml,8/8h,54,Tomar 1 compr
 RX0135,2022-09-12,47047538798,230765,ES,Neosaldina,FALSE,5ml,12/12h,50,Tomar após as refeições.
 RX0136,2022-09-15,41139630328,935762,RJ,Oxicodona,TRUE,10mg,8/8h,20,Tomar 1 comprimido conforme orientação. Não exceder a dose.
 RX0137,2021-01-24,30236528,956339,BA,Cimegripe,FALSE,20mg,Se necessário,47,Tomar após as refeições.
-RX0138,2023-11-28,24785060315,150549,ES,Azitromicina,FALSE,5ml,6/6h,95,Tomar após as refeições.
-RX0139,2024-12-01,14212826550,210363,MA,Codeína,TRUE,20mg,12/12h,24,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0140,2022-11-03,49368907317,657421,MT,Lorazepam,TRUE,5ml,12/12h,56,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0141,2025-06-22,16781133432,524389,RS,Ibuprofeno,FALSE,1g,8/8h,3,Tomar após as refeições.
-RX0142,2022-07-05,65882795962,358822,SE,Lorazepam,TRUE,1g,6/6h,10,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0143,2021-11-28,43384180957,188636,CE,Ritalina,TRUE,1g,8/8h,51,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0144,2020-12-18,70974321523,610875,AL,Morfina,TRUE,5ml,Se necessário,47,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0145,2022-11-14,88502687120,761651,MS,Loratadina,FALSE,50mg,12/12h,9,Tomar após as refeições.
-RX0146,2024-10-25,56257108651,132963,PR,Azitromicina,FALSE,250mg,Se necessário,46,Tomar após as refeições.
-RX0147,2022-07-03,4662851793,779028,AL,Clonazepam,TRUE,250mg,24/24h,32,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0148,2021-03-27,40021728491,970909,PI,Dipirona Sódica,FALSE,1g,24/24h,4,Tomar após as refeições.
-RX0149,2025-01-10,10697632166,157739,MS,Neosaldina,FALSE,100mg,12/12h,32,Tomar após as refeições.
-RX0150,2020-11-10,52402492891,125684,SP,Cimegripe,FALSE,100mg,6/6h,63,Tomar após as refeições.
-RX0151,2023-06-06,82495968551,333802,DF,Oxicodona,TRUE,5ml,Se necessário,7,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0152,2023-07-07,95827003429,954237,AM,Neosaldina,FALSE,100mg,24/24h,27,Tomar após as refeições.
-RX0153,2023-05-12,19928158002,786537,ES,Zolpidem,TRUE,250mg,Se necessário,20,Tomar 1 comprimido conforme orientação. Não exceder a dose.
-RX0154,2023-04-28,59313604434,543629,MA,Clonazepam,TRUE,1g,6/6h,25,Tomar 1 comprimido conforme orientação. Não exceder a dose.
+;doctor_crm;doctor_uf;medication;controlled;dosage;frequency;duration;notes
+RX001;2024-01-15;12345678901;123456;SP;Dipirona;false;500mg;8/8h;7;Tomar após refeições
+RX002;2024-01-16;98765432109;789012;RJ;Amoxicilina;false;875mg;12/12h;10;imido conforme orientação. Não exceder a dose.
 RX0155,2025-03-27,61811963952,295480,PI,Codeína,TRUE,50mg,8/8h,8,Tomar 1 comprimido conforme orientação. Não exceder a dose.
 RX0156,2021-02-02,63595420801,160771,SC,Ibuprofeno,FALSE,50mg,12/12h,85,Tomar após as refeições.
 RX0157,2022-07-01,50244706662,576140,BA,Ritalina,TRUE,20mg,12/12h,-10,Tomar 1 comprimido conforme orientação. Não exceder a dose.
