@@ -1,4 +1,5 @@
 import { controlledValidationData } from "./types"
+import { cleanDigitsRegex, isAllDigitsSame, isDosagePattern } from "./utils"
 
 export class CsvValidator{
     validateRequired(value: string): boolean {
@@ -8,10 +9,10 @@ export class CsvValidator{
     validateCpf(cpf: string): boolean {
         if (!cpf) return false
         
-        const cleanCpf = cpf.replace(/\D/g, '')
+        const cleanCpf = cleanDigitsRegex(cpf)
         if(cleanCpf.length !== 11) return false
 
-        if (/^(\d)\1{10}$/.test(cleanCpf)) return false
+        if (isAllDigitsSame(cleanCpf)) return false
 
         const invalidSequences = [
             '01234567890',
@@ -43,7 +44,7 @@ export class CsvValidator{
     validateCrm(crm: string): boolean {
         if (!crm) return false
         
-        const cleanCrm = crm.replace(/\D/g, '')
+        const cleanCrm = cleanDigitsRegex(crm)
         return cleanCrm.length === 6
     }
 
@@ -107,7 +108,6 @@ export class CsvValidator{
         
         const trimmedDosage = dosage.trim()
 
-        const dosagePattern = /^\d+(\.\d+)?(mg|g|ml|cp)$/i
-        return dosagePattern.test(trimmedDosage)
+        return isDosagePattern(trimmedDosage)
     }
 }
