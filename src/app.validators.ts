@@ -1,4 +1,4 @@
-import { BRAZILIAN_STATES } from "./app.constants"
+import { BRAZILIAN_STATES, VALIDATION_LIMITS } from "./app.constants"
 import { ValidationError } from "./types"
 import { hasLetter, hasRepeatingDigits, matchesDosageFormat } from "./utils"
 
@@ -11,7 +11,7 @@ export class prescriptionValidator{
         if (!cpf) return false
         
         if (hasLetter(cpf)) return false
-        if(cpf.length !== 11) return false
+        if(cpf.length !== VALIDATION_LIMITS.CPF_LENGTH) return false
 
         if (hasRepeatingDigits(cpf)) return false
 
@@ -47,7 +47,7 @@ export class prescriptionValidator{
         
         if (hasLetter(crm)) return false
         
-        return crm.length === 6
+        return crm.length === VALIDATION_LIMITS.CRM_LENGTH
     }
 
     validateUf(uf: string): boolean {
@@ -60,7 +60,7 @@ export class prescriptionValidator{
         if (!duration) return false
         
         const durationNumber = parseInt(duration)
-        return !isNaN(durationNumber) && durationNumber > 0 && durationNumber <= 90
+        return !isNaN(durationNumber) && durationNumber >= VALIDATION_LIMITS.MIN_DURATION_DAYS && durationNumber <= VALIDATION_LIMITS.MAX_DURATION_DAYS
     }
 
     validateControlledMedication(controlled: string, notes: string, duration: string): { isValid: boolean, errors: ValidationError[] } {
@@ -77,7 +77,7 @@ export class prescriptionValidator{
             }
             
             const durationNumber = parseInt(duration)
-            if (!isNaN(durationNumber) && durationNumber > 60) {
+            if (!isNaN(durationNumber) && durationNumber > VALIDATION_LIMITS.MAX_CONTROLLED_DURATION_DAYS) {
                 errors.push({
                     message: "Medicamentos controlados têm duração máxima de 60 dias",
                     value: duration
