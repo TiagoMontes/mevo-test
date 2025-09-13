@@ -1,6 +1,6 @@
-import { BRAZILIAN_STATES, VALIDATION_LIMITS } from "./app.constants"
+import { BRAZILIAN_STATES } from "./app.constants"
 import { ValidationError } from "./types"
-import { extractDigitsOnly, hasRepeatingDigits, matchesDosageFormat } from "./utils"
+import { hasLetter, hasRepeatingDigits, matchesDosageFormat } from "./utils"
 
 export class prescriptionValidator{
     isFieldRequired(value: string): boolean {
@@ -10,10 +10,10 @@ export class prescriptionValidator{
     validateCpf(cpf: string): boolean {
         if (!cpf) return false
         
-        const cleanCpf = extractDigitsOnly(cpf)
-        if(cleanCpf.length !== VALIDATION_LIMITS.CPF_LENGTH) return false
+        if (hasLetter(cpf)) return false
+        if(cpf.length !== 11) return false
 
-        if (hasRepeatingDigits(cleanCpf)) return false
+        if (hasRepeatingDigits(cpf)) return false
 
         const invalidSequences = [
             '01234567890',
@@ -23,7 +23,7 @@ export class prescriptionValidator{
             '09876543210'
         ]
         
-        if (invalidSequences.includes(cleanCpf)) return false
+        if (invalidSequences.includes(cpf)) return false
 
         return true
     }
@@ -45,8 +45,9 @@ export class prescriptionValidator{
     validateCrm(crm: string): boolean {
         if (!crm) return false
         
-        const cleanCrm = extractDigitsOnly(crm)
-        return cleanCrm.length === VALIDATION_LIMITS.CRM_LENGTH
+        if (hasLetter(crm)) return false
+        
+        return crm.length === 6
     }
 
     validateUf(uf: string): boolean {
@@ -59,7 +60,7 @@ export class prescriptionValidator{
         if (!duration) return false
         
         const durationNumber = parseInt(duration)
-        return !isNaN(durationNumber) && durationNumber >= VALIDATION_LIMITS.MIN_DURATION_DAYS && durationNumber <= VALIDATION_LIMITS.MAX_DURATION_DAYS
+        return !isNaN(durationNumber) && durationNumber > 0 && durationNumber <= 90
     }
 
     validateControlledMedication(controlled: string, notes: string, duration: string): { isValid: boolean, errors: ValidationError[] } {
@@ -76,7 +77,7 @@ export class prescriptionValidator{
             }
             
             const durationNumber = parseInt(duration)
-            if (!isNaN(durationNumber) && durationNumber > VALIDATION_LIMITS.MAX_CONTROLLED_DURATION_DAYS) {
+            if (!isNaN(durationNumber) && durationNumber > 60) {
                 errors.push({
                     message: "Medicamentos controlados têm duração máxima de 60 dias",
                     value: duration

@@ -6,12 +6,12 @@ export function normalizeString(s: string) {
     .toLowerCase();
 }
 
-export function extractDigitsOnly(digit: string) {
-  return digit.replace(/\D/g, '')
-}
-
 export function hasRepeatingDigits(digits: string) {
   return (/^(\d)\1{10}$/.test(digits))
+}
+
+export function hasLetter(digits: string) {
+  return /[a-zA-Z]/.test(digits)
 }
 
 export function matchesDosageFormat(dosage: string) {
