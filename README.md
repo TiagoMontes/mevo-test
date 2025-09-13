@@ -65,6 +65,10 @@ Foram criados alguns arquivos para testar as validações, incluindo diferentes 
 
 Foi disponibilizado no diretório `/collections` um arquivo JSON para importar no Postman ou ferramentas similares e testar a API.
 
+### Principais endpoints
+  - `api/prescriptions/upload` (POST)
+  - `api/prescriptions/upload/:id` (GET)
+
 ## Decisões Técnicas
 
 Os principais pontos considerados para construir esta solução foram:
