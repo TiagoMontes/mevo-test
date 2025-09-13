@@ -1,0 +1,88 @@
+{
+  "info": {
+    "name": "mevo-test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Post csv file",
+      "event": [],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "http://localhost:3001/api/prescriptions/upload",
+          "protocol": "http",
+          "host": [
+            "localhost:3001"
+          ],
+          "path": [
+            "api",
+            "prescriptions",
+            "upload"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "value": [
+                "/Users/tiagomontesdossantos/Documents/newTest.csv"
+              ],
+              "disabled": false,
+              "type": "default"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "get prescription info",
+      "event": [],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "http://localhost:3001/api/prescriptions/upload/212f7fd4-2c57-4308-aa47-7584efceb9a0",
+          "protocol": "http",
+          "host": [
+            "localhost:3001"
+          ],
+          "path": [
+            "api",
+            "prescriptions",
+            "upload",
+            "212f7fd4-2c57-4308-aa47-7584efceb9a0"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "value": [
+                "/Users/tiagomontesdossantos/Documents/prescricaoteste.csv"
+              ],
+              "disabled": false,
+              "type": "default"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": []
+}
