@@ -61,7 +61,10 @@ export class prescriptionValidator{
         if (!duration) return false
         
         const durationNumber = parseInt(duration)
-        return !isNaN(durationNumber) && durationNumber >= VALIDATION_LIMITS.MIN_DURATION_DAYS && durationNumber <= VALIDATION_LIMITS.MAX_DURATION_DAYS
+        if (isNaN(durationNumber)) return false
+        
+
+        return durationNumber > 0 && durationNumber >= VALIDATION_LIMITS.MIN_DURATION_DAYS && durationNumber <= VALIDATION_LIMITS.MAX_DURATION_DAYS
     }
 
     validateControlledMedication(controlled: string, notes: string, duration: string): { isValid: boolean, errors: ValidationError[] } {
