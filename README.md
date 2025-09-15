@@ -90,3 +90,11 @@ A estratégia adotada para validação foi:
 > **Regra:** Caso exista uma letra no conjunto de números, o código invalidará o registro.
 
 Meu pensamento foi que: não podemos permitir que dados incorretos cheguem ao backend. Flexibilizar essas validações poderia causar problemas críticos futuramente ao aceitar dados inválidos.
+
+### Processamento Assíncrono
+
+Implementei o processamento assíncrono utilizando `setImmediate`. A abordagem funciona da seguinte forma:
+
+- **Resposta imediata:** A API retorna instantaneamente o status inicial (`processing`) e progresso `0`
+- **Processamento em lotes:** Os dados são processados em batches de 10 registros por vez, com um delay intencional de 2 segundos entre cada lote
+- **Monitoramento de progresso:** O status e progresso atualizados podem ser consultados a qualquer momento através do endpoint `GET /api/prescriptions/upload/{uuid}`
